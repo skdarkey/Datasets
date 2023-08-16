@@ -300,3 +300,17 @@ def pred_timer(model, samples):
   total_time = end_time - start_time  # calculate how long predictions took to make
   time_per_pred = total_time/len(samples)
   return total_time, time_per_pred
+
+# function to read lines from a file like txt file and return them as a list.
+def get_lines(filename):
+  """
+  Reads filename (a text filename) and returns the lines of a text as a list.
+  Args:
+    filename: a string containing the target filepath.
+
+  Returns:
+    A list of strings with one string per line from the target filename.
+  """
+  with open(filename, "r") as f:
+    return f.readlines()
+    
