@@ -313,4 +313,40 @@ def get_lines(filename):
   """
   with open(filename, "r") as f:
     return f.readlines()
-    
+
+# function to take a file and split the lines to get sentences and their labels and put them into dictionaries
+def preprocess_text_with_line_numbers(filename):
+  """
+  Returns a list of dictionaries of abstract line data.
+
+  Takes in filename, reads its contents and sorts through each line,
+  extracting things like the target label, the text of the sentence,
+  how many sentences are in the current abstract and what sentence number the target line is.
+  """
+  input_lines = get_lines(filename)   # here I use the get lines function defined above to read the lines from the file.
+  abstract_lines = " " # create an empty abstract
+  abstract_samples = [] # creates an empty list of abstracts
+
+  # Loop through each line in the target file
+  for line in input_lines:           # The first loop gets each abstract block in the file
+    if line.startswith("###"):      # Checking to see if the line is an ID line.
+      abstract_id = line
+      abstract_lines = ""    # reset the abstract sting if the line is an ID line.
+
+    elif line.isspace():   # check to see if line is a new line
+      abstract_line_split = abstract_lines.splitlines()      # split abstract into separate lines
+
+      # Now we iterate through each line in a single abstract and count them as same time
+      for abstract_line_number, abstract_line in enumerate(abstract_line_split):
+        line_data = {}  # creating an empty dictionary for each line
+        target_text_split = abstract_line.split("\t")   # spliting the target from the text.
+        line_data["target"] = target_text_split[0]
+        line_data["text"] = target_text_split[1].lower()   # getting the target text/sentence and lowering it
+        line_data["line_number"] = abstract_line_number     # what number does the line appear in the abstract
+        line_data["total_lines"] = len(abstract_line_split)-1  # how many total lines are there in the abstract? starts at index 0
+        abstract_samples.append(line_data)   # add line data to abstract samples list
+
+    else:  # if the line is not an Id line or a new line, then it contains a labelled sentence
+      abstract_lines += line
+
+  return abstract_samples
