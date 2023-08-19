@@ -350,3 +350,26 @@ def preprocess_text_with_line_numbers(filename):
       abstract_lines += line
 
   return abstract_samples
+
+# Create a function to plot the time series data
+def plot_time_series(timesteps, values, format=".", start=0, end=None, label=None):
+  """
+  Plots timesteps ( a series of points in time) against values (a series of values across the time steps)
+
+  Parameters
+  -------------
+  timesteps: array of timestep values
+  values: array of values across time
+  format: style of plot, default "." for scatter plot
+  start: where to start the plot (setting a value will index from start of timesteps to plot from)
+  end : where to end the plot(which timestep to end the plot)
+  label: label to show on plot about values. Default None
+  """
+    # plot the series
+  plt.plot(timesteps[start:end], values[start:end], format, label=label)
+  plt.xlabel("Time")
+  plt.ylabel("Price")
+
+  if label:
+    plt.legend(fontsize=14)  # make label bigger
+  plt.grid(True)
